@@ -1,23 +1,28 @@
 package roadhog360.simpleskinbackport;
 
+import static roadhog360.simpleskinbackport.SimpleSkinBackport.MOD_ID;
+import static roadhog360.simpleskinbackport.SimpleSkinBackport.MOD_NAME;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import roadhog360.simpleskinbackport.proxy.CommonProxy;
 
-@Mod(modid = Tags.MOD_ID, name = Tags.MOD_NAME, acceptedMinecraftVersions = "[1.7.10]")
+@Mod(modid = MOD_ID, name = MOD_NAME, acceptedMinecraftVersions = "[1.7.10]")
 public class SimpleSkinBackport {
-    public static final Logger LOG = LogManager.getLogger(Tags.MOD_ID);
 
-    @Mod.Instance(Tags.MOD_ID)
-    public static SimpleSkinBackport instance;
+    public static final String MOD_ID = "simpleskinbackport";
+    public static final String MOD_NAME = "SimpleSkinbackport";
+    public static final String MOD_GROUP = "roadhog360.simpleskinbackport";
+    public static final Logger LOG = LogManager.getLogger(MOD_ID);
 
-    @SidedProxy(clientSide = Tags.MOD_GROUP + ".proxy.ClientProxy", serverSide = Tags.MOD_GROUP + ".proxy.CommonProxy")
+    @SidedProxy(clientSide = MOD_GROUP + ".proxy.ClientProxy", serverSide = MOD_GROUP + ".proxy.CommonProxy")
     public static CommonProxy proxy;
 
     @Mod.EventHandler

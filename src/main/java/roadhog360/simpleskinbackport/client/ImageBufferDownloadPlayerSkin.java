@@ -1,14 +1,16 @@
 package roadhog360.simpleskinbackport.client;
 
-import com.mojang.authlib.minecraft.MinecraftProfileTexture;
-import net.minecraft.client.renderer.ImageBufferDownload;
-import net.minecraft.client.resources.SkinManager;
-import roadhog360.simpleskinbackport.core.Utils;
-import roadhog360.simpleskinbackport.ducks.IArmsState;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+
+import net.minecraft.client.renderer.ImageBufferDownload;
+import net.minecraft.client.resources.SkinManager;
+
+import com.mojang.authlib.minecraft.MinecraftProfileTexture;
+
+import roadhog360.simpleskinbackport.core.Utils;
+import roadhog360.simpleskinbackport.ducks.IArmsState;
 
 public class ImageBufferDownloadPlayerSkin extends ImageBufferDownload {
 
@@ -23,8 +25,7 @@ public class ImageBufferDownloadPlayerSkin extends ImageBufferDownload {
 
     @Override
     public BufferedImage parseUserSkin(BufferedImage buffImg) {
-        if (buffImg == null)
-            return null;
+        if (buffImg == null) return null;
         imageWidth = 64;
         imageHeight = 64;
         BufferedImage buffImg2 = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
@@ -47,7 +48,8 @@ public class ImageBufferDownloadPlayerSkin extends ImageBufferDownload {
         }
 
         graphics.dispose();
-        imageData = ((DataBufferInt) buffImg2.getRaster().getDataBuffer()).getData();
+        imageData = ((DataBufferInt) buffImg2.getRaster()
+            .getDataBuffer()).getData();
         setAreaOpaque(0, 0, 32, 16);
         setAreaTransparent(32, 0, 64, 32);
         setAreaOpaque(0, 16, 64, 32);
@@ -60,11 +62,12 @@ public class ImageBufferDownloadPlayerSkin extends ImageBufferDownload {
         return buffImg2;
     }
 
-    //This is temporary; Once I figure out how to inject where this is called in SkinManager.class I'll do that instead.
+    // This is temporary; Once I figure out how to inject where this is called in SkinManager.class I'll do that
+    // instead.
     @Override
     public void func_152634_a() {
         super.func_152634_a();
-        if(callback instanceof IArmsState data) {
+        if (callback instanceof IArmsState data) {
             Utils.setSlimFromMetadata(texture, data);
         }
     }

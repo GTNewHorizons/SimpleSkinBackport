@@ -1,11 +1,13 @@
 package roadhog360.simpleskinbackport.core;
 
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
+
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.List;
+import com.google.common.collect.Lists;
 
 public class ArmPair extends Pair<List<ModelBox>, List<ModelBox>> {
 
@@ -22,8 +24,11 @@ public class ArmPair extends Pair<List<ModelBox>, List<ModelBox>> {
     }
 
     public static ArmPair of(ModelRenderer left, ModelRenderer right) {
-        return new ArmPair(Lists.newArrayList(left.cubeList), Utils.createDisplaylistFor(left),
-            Lists.newArrayList(right.cubeList), Utils.createDisplaylistFor(right));
+        return new ArmPair(
+            Lists.newArrayList(left.cubeList),
+            Utils.createDisplaylistFor(left),
+            Lists.newArrayList(right.cubeList),
+            Utils.createDisplaylistFor(right));
     }
 
     @Override

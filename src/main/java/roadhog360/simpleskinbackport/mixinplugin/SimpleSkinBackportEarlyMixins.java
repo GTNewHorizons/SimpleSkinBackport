@@ -1,23 +1,27 @@
 package roadhog360.simpleskinbackport.mixinplugin;
 
-import com.gtnewhorizon.gtnhmixins.IEarlyMixinLoader;
-import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
-import org.spongepowered.asm.mixin.MixinEnvironment;
-import roadhog360.simpleskinbackport.Tags;
-import roadhog360.simpleskinbackport.configuration.ConfigBase;
+import static roadhog360.simpleskinbackport.SimpleSkinBackport.MOD_ID;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.spongepowered.asm.mixin.MixinEnvironment;
+
+import com.gtnewhorizon.gtnhmixins.IEarlyMixinLoader;
+
+import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
+import roadhog360.simpleskinbackport.configuration.ConfigBase;
+
 public class SimpleSkinBackportEarlyMixins implements IFMLLoadingPlugin, IEarlyMixinLoader {
 
-    public static final MixinEnvironment.Side SIDE = MixinEnvironment.getCurrentEnvironment().getSide();
+    public static final MixinEnvironment.Side SIDE = MixinEnvironment.getCurrentEnvironment()
+        .getSide();
 
     @Override
     public String getMixinConfig() {
-        return "mixins." + Tags.MOD_ID + ".early.json";
+        return "mixins." + MOD_ID + ".early.json";
     }
 
     @Override

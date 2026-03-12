@@ -3,6 +3,7 @@ package roadhog360.simpleskinbackport.core;
 import net.minecraft.util.ResourceLocation;
 
 public class PlayerSkin {
+
     private final boolean slim;
     private final String domain;
     private final String skinName;
@@ -22,8 +23,10 @@ public class PlayerSkin {
     }
 
     public ResourceLocation getResource() {
-        if(resource == null) {
-            resource = new ResourceLocation(domain, "textures/entity/player/" + (slim ? "slim" : "wide") + "/" + skinName + ".png");
+        if (resource == null) {
+            resource = new ResourceLocation(
+                domain,
+                "textures/entity/player/" + (slim ? "slim" : "wide") + "/" + skinName + ".png");
         }
         return resource;
     }

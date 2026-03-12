@@ -4,11 +4,10 @@ public class LimbManager {
 
     public static final byte ALL_LIMBS = (byte) 0xFF;
 
-    public byte createLimbInfo(Limb... limbs)
-    {
+    public byte createLimbInfo(Limb... limbs) {
         byte result = 0;
 
-        for(Limb limb : limbs) {
+        for (Limb limb : limbs) {
             result |= (byte) limb.ordinal();
         }
 
@@ -25,7 +24,6 @@ public class LimbManager {
         LEFT_ARM,
         RIGHT_ARM,
         LEFT_LEG,
-        RIGHT_LEG
-        ;
+        RIGHT_LEG;
     }
 }

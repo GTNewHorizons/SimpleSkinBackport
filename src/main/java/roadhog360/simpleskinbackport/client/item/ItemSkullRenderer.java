@@ -1,13 +1,15 @@
 package roadhog360.simpleskinbackport.client.item;
 
-import com.mojang.authlib.GameProfile;
 import net.minecraft.client.renderer.tileentity.TileEntitySkullRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.util.Constants;
+
 import org.lwjgl.opengl.GL11;
+
+import com.mojang.authlib.GameProfile;
 
 public class ItemSkullRenderer implements IItemRenderer {
 
@@ -45,7 +47,7 @@ public class ItemSkullRenderer implements IItemRenderer {
     }
 
     private void renderSkull(float x, float y, float z, int meta, GameProfile name) {
-        if(TileEntitySkullRenderer.field_147536_b != null) {
+        if (TileEntitySkullRenderer.field_147536_b != null) {
             GL11.glPushMatrix();
             GL11.glTranslatef(x, y, z);
             TileEntitySkullRenderer.field_147536_b.func_152674_a(0, 0, 0, 0, 0, meta, name);

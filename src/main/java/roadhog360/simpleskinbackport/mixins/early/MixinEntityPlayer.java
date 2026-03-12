@@ -1,8 +1,10 @@
 package roadhog360.simpleskinbackport.mixins.early;
 
 import net.minecraft.entity.player.EntityPlayer;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
+
 import roadhog360.simpleskinbackport.ducks.IArmsState;
 
 @Mixin(EntityPlayer.class)
