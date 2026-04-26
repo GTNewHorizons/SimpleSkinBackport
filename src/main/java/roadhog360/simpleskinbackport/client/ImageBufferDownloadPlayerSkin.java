@@ -15,7 +15,7 @@ import roadhog360.simpleskinbackport.ducks.IArmsState;
 public class ImageBufferDownloadPlayerSkin extends ImageBufferDownload {
 
     private final MinecraftProfileTexture texture;
-    private final SkinManager.SkinAvailableCallback callback;
+    private SkinManager.SkinAvailableCallback callback;
 
     public ImageBufferDownloadPlayerSkin(MinecraftProfileTexture texture, SkinManager.SkinAvailableCallback callback) {
         super();
@@ -70,5 +70,6 @@ public class ImageBufferDownloadPlayerSkin extends ImageBufferDownload {
         if (callback instanceof IArmsState data) {
             Utils.setSlimFromMetadata(texture, data);
         }
+        this.callback = null;
     }
 }
