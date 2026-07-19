@@ -49,7 +49,7 @@ public abstract class MixinAbstractClientPlayer extends EntityPlayer
 
     @Redirect(
         method = "getDownloadImageSkin",
-        at = @At(value = "NEW", target = "net.minecraft.client.renderer.ImageBufferDownload"))
+        at = @At(value = "NEW", target = "()Lnet/minecraft/client/renderer/ImageBufferDownload;"))
     private static ImageBufferDownload use64xSkinParser() {
         return new ImageBufferDownloadPlayerSkin(null, null);
     }
