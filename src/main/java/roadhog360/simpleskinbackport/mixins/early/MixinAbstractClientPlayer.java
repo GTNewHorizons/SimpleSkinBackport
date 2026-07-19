@@ -1,6 +1,7 @@
 package roadhog360.simpleskinbackport.mixins.early;
 
 import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.renderer.ImageBufferDownload;
 import net.minecraft.client.resources.SkinManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -15,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.mojang.authlib.GameProfile;
 
+import roadhog360.simpleskinbackport.client.ImageBufferDownloadPlayerSkin;
 import roadhog360.simpleskinbackport.configuration.configs.ConfigMain;
 import roadhog360.simpleskinbackport.core.PlayerSkin;
 import roadhog360.simpleskinbackport.ducks.IArmsState;
@@ -43,6 +45,13 @@ public abstract class MixinAbstractClientPlayer extends EntityPlayer
     private ResourceLocation setNewDefaultSkin() {
         ssb$setSlim(ssb$defaultSkin.isSlim());
         return ssb$defaultSkin.getResource();
+    }
+
+    @Redirect(
+        method = "getDownloadImageSkin",
+        at = @At(value = "NEW", target = "net.minecraft.client.renderer.ImageBufferDownload"))
+    private static ImageBufferDownload use64xSkinParser() {
+        return new ImageBufferDownloadPlayerSkin(null, null);
     }
 
     // UUID uuid = UUID.randomUUID();
