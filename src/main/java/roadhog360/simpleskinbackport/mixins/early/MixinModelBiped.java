@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
+import roadhog360.simpleskinbackport.client.SkinLayers;
 import roadhog360.simpleskinbackport.configuration.configs.ConfigMain;
 import roadhog360.simpleskinbackport.core.ArmPair;
 import roadhog360.simpleskinbackport.core.Utils;
@@ -75,6 +76,7 @@ public abstract class MixinModelBiped extends ModelBase implements INewBipedMode
     @Unique
     private void ssb$setupBoxes() {
         Utils.setAllBoxesTransparent(bipedHeadwear);
+        SkinLayers.mark(bipedHeadwear, SkinLayers.Part.HAT);
 
         if (textureHeight == 64) {
             Utils.remakeBoxes(bipedCloak.setTextureSize(textureWidth, 32));
@@ -99,6 +101,11 @@ public abstract class MixinModelBiped extends ModelBase implements INewBipedMode
 
             ssb$bipedBodywear = Utils
                 .setAllBoxesTransparent(Utils.cloneModel(this, bipedBody, 16, 32, true, Utils.BoxTransformType.HAT));
+            SkinLayers.mark(ssb$bipedBodywear, SkinLayers.Part.JACKET);
+            SkinLayers.mark(ssb$bipedLeftArmwear, SkinLayers.Part.LEFT_SLEEVE);
+            SkinLayers.mark(ssb$bipedRightArmwear, SkinLayers.Part.RIGHT_SLEEVE);
+            SkinLayers.mark(ssb$bipedLeftLegwear, SkinLayers.Part.LEFT_TROUSER);
+            SkinLayers.mark(ssb$bipedRightLegwear, SkinLayers.Part.RIGHT_TROUSER);
         }
 
         ssb$armsRotationPointY = bipedRightArm.rotationPointY;
