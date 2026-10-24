@@ -9,9 +9,19 @@ public class ConfigMain extends ConfigBase {
 
     public static DefaultPlayerSkin.Set defaultSkinSet = DefaultPlayerSkin.Set.ALL_DEFAULTS;
     public static boolean oldSlimArms = false;
+    public static boolean extrudedLayers = false;
+    public static float extrudedLayerThickness = 0.2F;
+    public static float extrudedLayerDistance = 12;
+    public static boolean extrudedHat = true;
+    public static boolean extrudedJacket = true;
+    public static boolean extrudedLeftSleeve = true;
+    public static boolean extrudedRightSleeve = true;
+    public static boolean extrudedLeftTrouser = true;
+    public static boolean extrudedRightTrouser = true;
 
     static final String catSkins = "skins";
     static final String catHeads = "heads";
+    static final String catLayers = "client.extrudedLayers";
 
     public ConfigMain(File file) {
         super(file);
@@ -20,10 +30,41 @@ public class ConfigMain extends ConfigBase {
 
         configCats.add(getCategory(catSkins));
         configCats.add(getCategory(catHeads));
+        getCategory(catLayers).setComment("Optional per-pixel thickness for outer skin layers.");
+        configCats.add(getCategory(catLayers));
     }
 
     @Override
     protected void syncConfigOptions() {
+        extrudedLayers = getBoolean("enabled", catLayers, false, "Render occupied outer skin pixels with thickness.");
+        extrudedLayerThickness = getFloat(
+            "thickness",
+            catLayers,
+            0.2F,
+            0.05F,
+            1F,
+            "Thickness in model pixels beyond the normal outer skin surface.");
+        extrudedLayerDistance = getFloat(
+            "distance",
+            catLayers,
+            12,
+            1,
+            64,
+            "Maximum render distance in blocks. Farther players and placed heads use flat layers.");
+        extrudedHat = getBoolean(
+            "hat",
+            catLayers,
+            true,
+            "Extrude the hat layer, including player head items and blocks.");
+        extrudedJacket = getBoolean("jacket", catLayers, true, "Extrude the jacket layer.");
+        extrudedLeftSleeve = getBoolean("leftSleeve", catLayers, true, "Extrude the left sleeve.");
+        extrudedRightSleeve = getBoolean(
+            "rightSleeve",
+            catLayers,
+            true,
+            "Extrude the right sleeve, including first person.");
+        extrudedLeftTrouser = getBoolean("leftTrouser", catLayers, true, "Extrude the left trouser layer.");
+        extrudedRightTrouser = getBoolean("rightTrouser", catLayers, true, "Extrude the right trouser layer.");
         defaultSkinSet = DefaultPlayerSkin.Set.valueOf(
             getString(
                 "defaultSkinSet",
