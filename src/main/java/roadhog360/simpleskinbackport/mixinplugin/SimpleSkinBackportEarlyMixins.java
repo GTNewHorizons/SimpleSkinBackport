@@ -45,6 +45,7 @@ public class SimpleSkinBackportEarlyMixins implements IFMLLoadingPlugin, IEarlyM
             mixins.add("MixinTextureManager");
             mixins.add("MixinLivingRenderer");
             mixins.add("MixinGuiInventory");
+            mixins.add("MixinSkullRenderer");
             mixins.add("MixinSkinManager");
             mixins.add("MixinRenderingRegistry");
         }
