@@ -1,6 +1,7 @@
 package roadhog360.simpleskinbackport.client;
 
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
@@ -29,7 +30,8 @@ public class ImageBufferDownloadPlayerSkin extends ImageBufferDownload {
         imageWidth = 64;
         imageHeight = 64;
         BufferedImage buffImg2 = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
-        Graphics graphics = buffImg2.getGraphics();
+        Graphics2D graphics = buffImg2.createGraphics();
+        graphics.setComposite(AlphaComposite.Src);
         graphics.drawImage(buffImg, 0, 0, null);
 
         if (buffImg.getHeight() == 32) {
@@ -51,14 +53,10 @@ public class ImageBufferDownloadPlayerSkin extends ImageBufferDownload {
         imageData = ((DataBufferInt) buffImg2.getRaster()
             .getDataBuffer()).getData();
         setAreaOpaque(0, 0, 32, 16);
-        setAreaTransparent(32, 0, 64, 32);
+        // Only legacy skins use an all-opaque hat region as a signal that no hat was supplied.
+        if (buffImg.getHeight() == 32) setAreaTransparent(32, 0, 64, 32);
         setAreaOpaque(0, 16, 64, 32);
-        setAreaTransparent(0, 32, 16, 48);
-        setAreaTransparent(16, 32, 40, 48);
-        setAreaTransparent(40, 32, 56, 48);
-        setAreaTransparent(0, 48, 16, 64);
         setAreaOpaque(16, 48, 48, 64);
-        setAreaTransparent(48, 48, 64, 64);
         return buffImg2;
     }
 

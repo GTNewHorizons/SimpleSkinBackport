@@ -29,7 +29,7 @@ public class MixinSkinManager {
     private ResourceLocation changeDownloadLocation(String p_i1293_1_, Operation<ResourceLocation> original,
         @Local(argsOnly = true) final MinecraftProfileTexture.Type p_152789_2_,
         @Local(argsOnly = true) final SkinManager.SkinAvailableCallback p_152789_3_) {
-        if (Utils.isPlayer(p_152789_2_, p_152789_3_)) {
+        if (p_152789_2_ == MinecraftProfileTexture.Type.SKIN) {
             return new ResourceLocation(MOD_ID, p_i1293_1_);
         }
         return original.call(p_i1293_1_);
@@ -42,7 +42,7 @@ public class MixinSkinManager {
         @Local(argsOnly = true) MinecraftProfileTexture p_152789_1_,
         @Local(argsOnly = true) MinecraftProfileTexture.Type p_152789_2_,
         @Local(argsOnly = true) SkinManager.SkinAvailableCallback p_152789_3_) {
-        if (Utils.isPlayer(p_152789_2_, p_152789_3_)) {
+        if (p_152789_2_ == MinecraftProfileTexture.Type.SKIN) {
             return new ImageBufferDownloadPlayerSkin(p_152789_1_, p_152789_3_);
         }
         return original.call();

@@ -15,6 +15,7 @@ import net.minecraftforge.client.event.RenderLivingEvent;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import roadhog360.simpleskinbackport.core.Utils;
 import roadhog360.simpleskinbackport.ducks.IArmsState;
 import roadhog360.simpleskinbackport.ducks.INewBipedModel;
@@ -22,6 +23,16 @@ import roadhog360.simpleskinbackport.ducks.INewBipedModel;
 public class ClientEventHandler {
 
     public static final ClientEventHandler INSTANCE = new ClientEventHandler();
+
+    private int cleanupTicks;
+
+    @SubscribeEvent
+    public void onClientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase == TickEvent.Phase.END && ++cleanupTicks == 20) {
+            cleanupTicks = 0;
+            SkinLayers.cleanUp();
+        }
+    }
 
     @SubscribeEvent
     public void onHandRender(RenderHandEvent event) {
@@ -32,8 +43,6 @@ public class ClientEventHandler {
                 FMLClientHandler.instance()
                     .getClientPlayerEntity()));
     }
-
-    private static boolean hidingHeadwear;
 
     @SubscribeEvent
     public void onRenderEntity(RenderLivingEvent.Pre event) {
@@ -52,24 +61,7 @@ public class ClientEventHandler {
         boolean showHeadwear = itemstack == null || !isHead(itemstack.getItem());
 
         if (headwear.showModel && !showHeadwear) {
-            hidingHeadwear = true;
             headwear.showModel = false;
-        }
-    }
-
-    public void onPostRenderEntity(RenderLivingEvent.Post event) {
-        ModelRenderer headwear;
-        if (event.renderer instanceof RenderPlayer renderPlayer) {
-            headwear = renderPlayer.modelBipedMain.bipedHeadwear;
-        } else if (event.renderer instanceof RenderBiped renderBiped) {
-            headwear = renderBiped.modelBipedMain.bipedHeadwear;
-        } else {
-            return;
-        }
-
-        if (hidingHeadwear) {
-            headwear.showModel = true;
-            hidingHeadwear = false;
         }
     }
 
