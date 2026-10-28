@@ -9,7 +9,7 @@ public class ConfigMain extends ConfigBase {
 
     public static DefaultPlayerSkin.Set defaultSkinSet = DefaultPlayerSkin.Set.ALL_DEFAULTS;
     public static boolean oldSlimArms = false;
-    public static boolean extrudedLayers = false;
+    public static boolean extrudedLayers = true;
     public static float extrudedLayerThickness = 0.2F;
     public static float extrudedLayerDistance = 12;
     public static boolean extrudedHat = true;
@@ -36,7 +36,7 @@ public class ConfigMain extends ConfigBase {
 
     @Override
     protected void syncConfigOptions() {
-        extrudedLayers = getBoolean("enabled", catLayers, false, "Render occupied outer skin pixels with thickness.");
+        extrudedLayers = getBoolean("enabled", catLayers, true, "Render occupied outer skin pixels with thickness.");
         extrudedLayerThickness = getFloat(
             "thickness",
             catLayers,
