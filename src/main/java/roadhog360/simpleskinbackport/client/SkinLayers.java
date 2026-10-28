@@ -17,7 +17,7 @@ import roadhog360.simpleskinbackport.configuration.configs.ConfigMain;
 import roadhog360.simpleskinbackport.ducks.IBoxSizeGetter;
 import roadhog360.simpleskinbackport.ducks.ISkinLayer;
 
-/** Selects ready skin geometry at the model's normal draw point. All calls run on the render thread. */
+/** Draws skin layers with cached geometry and scoped state. All calls run on the render thread. */
 public final class SkinLayers {
 
     private static final SkinLayerCache CACHE = new SkinLayerCache(30, GLAllocation::deleteDisplayLists);
@@ -61,7 +61,6 @@ public final class SkinLayers {
         CACHE.cleanUp();
     }
 
-    /** Returns true only when the selected skin and current model shape have ready geometry. */
     public static boolean render(ModelRenderer renderer, Part part, float scale) {
         if (!enabled(part) || !SkinLayerRenderContext.within(ConfigMain.extrudedLayerDistance)) return false;
         int texture = SkinLayerRenderContext
@@ -71,12 +70,14 @@ public final class SkinLayers {
         for (int i = 0; i < renderer.cubeList.size(); i++) {
             faceCount += ((IBoxSizeGetter) renderer.cubeList.get(i)).ssb$getQuads().length;
         }
-        if (modelFaces.length != faceCount) modelFaces = new float[faceCount][20];
+        if (modelFaces.length != faceCount) modelFaces = new float[faceCount][21];
+        float baseInset = baseInset(renderer, part);
         int faceIndex = 0;
         for (int boxIndex = 0; boxIndex < renderer.cubeList.size(); boxIndex++) {
             ModelBox box = renderer.cubeList.get(boxIndex);
             for (TexturedQuad quad : ((IBoxSizeGetter) box).ssb$getQuads()) {
                 float[] face = modelFaces[faceIndex++];
+                face[20] = baseInset;
                 for (int i = 0; i < 4; i++) {
                     PositionTextureVertex vertex = quad.vertexPositions[i];
                     face[i * 5] = (float) vertex.vector3D.xCoord;
@@ -98,14 +99,22 @@ public final class SkinLayers {
             layer.compiled(displayList);
         }
         GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_COLOR_BUFFER_BIT);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glPushMatrix();
-        GL11.glScalef(scale, scale, scale);
-        GL11.glCallList(layer.displayList);
-        GL11.glPopMatrix();
-        GL11.glPopAttrib();
+        try {
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GL11.glScalef(scale, scale, scale);
+            GL11.glCallList(layer.displayList);
+        } finally {
+            GL11.glPopMatrix();
+            GL11.glPopAttrib();
+        }
         return true;
+    }
+
+    private static float baseInset(ModelRenderer renderer, Part part) {
+        if (part != Part.HAT) return 0.25F;
+        return ((ISkinLayer) renderer).ssb$isBipedPart() ? 0.5F : 0.25F;
     }
 
     static void draw(SkinLayerMesh mesh) {

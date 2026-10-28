@@ -43,7 +43,7 @@ public class ConfigMain extends ConfigBase {
             0.2F,
             0.05F,
             1F,
-            "Thickness in model pixels beyond the normal outer skin surface.");
+            "Thickness in model pixels from the base skin. Larger values can intersect equipment.");
         extrudedLayerDistance = getFloat(
             "distance",
             catLayers,
