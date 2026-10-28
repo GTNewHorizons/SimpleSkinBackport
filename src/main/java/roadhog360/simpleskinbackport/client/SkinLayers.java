@@ -14,6 +14,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
 import roadhog360.simpleskinbackport.configuration.configs.ConfigMain;
+import roadhog360.simpleskinbackport.core.Utils;
 import roadhog360.simpleskinbackport.ducks.IBoxSizeGetter;
 import roadhog360.simpleskinbackport.ducks.ISkinLayer;
 
@@ -113,7 +114,7 @@ public final class SkinLayers {
     }
 
     private static float baseInset(ModelRenderer renderer, Part part) {
-        if (part != Part.HAT) return 0.25F;
+        if (part != Part.HAT) return Utils.BODY_LAYER_INFLATION;
         return ((ISkinLayer) renderer).ssb$isBipedPart() ? 0.5F : 0.25F;
     }
 
