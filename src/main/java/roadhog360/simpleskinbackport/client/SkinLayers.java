@@ -66,7 +66,6 @@ public final class SkinLayers {
         if (!enabled(part) || !SkinLayerRenderContext.within(ConfigMain.extrudedLayerDistance)) return false;
         int texture = SkinLayerRenderContext
             .texture(renderer, GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D), GL11.glIsEnabled(GL11.GL_TEXTURE_2D));
-        if (!CACHE.contains(texture) && !readSkin(texture)) return false;
         int faceCount = 0;
         for (int i = 0; i < renderer.cubeList.size(); i++) {
             faceCount += ((IBoxSizeGetter) renderer.cubeList.get(i)).ssb$getQuads().length;
@@ -90,6 +89,9 @@ public final class SkinLayers {
             }
         }
         SkinLayerCache.Layer layer = CACHE.get(texture, modelFaces, ConfigMain.extrudedLayerThickness);
+        if (layer == null && readSkin(texture)) {
+            layer = CACHE.get(texture, modelFaces, ConfigMain.extrudedLayerThickness);
+        }
         if (layer == null) return false;
         if (layer.empty) return true;
         if (layer.displayList == 0) {

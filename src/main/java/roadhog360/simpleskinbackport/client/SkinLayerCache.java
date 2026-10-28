@@ -36,10 +36,6 @@ final class SkinLayerCache {
         skins.put(texture, new Skin(snapshot));
     }
 
-    boolean contains(int texture) {
-        return skins.getIfPresent(texture) != null;
-    }
-
     Layer get(int texture, float[][] faces, float thickness) {
         Skin skin = skins.getIfPresent(texture);
         if (skin == null) return null;
