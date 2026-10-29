@@ -1,5 +1,7 @@
 package roadhog360.simpleskinbackport.client;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
@@ -8,6 +10,8 @@ import net.minecraft.client.model.ModelRenderer;
 /** Scoped model rendering state. Inventory and first-person draws are always close. */
 public final class SkinLayerRenderContext {
 
+    // Nested draws need separate maps. Released maps retain no model or texture references.
+    private static final Deque<Map<ModelRenderer, Integer>> textureMaps = new ArrayDeque<>();
     private static double distanceSquared;
     private static boolean near;
     private static Map<ModelRenderer, Integer> textures;
@@ -22,12 +26,16 @@ public final class SkinLayerRenderContext {
         double previous = distanceSquared;
         Map<ModelRenderer, Integer> previousTextures = textures;
         distanceSquared = x * x + y * y + z * z;
-        textures = new IdentityHashMap<>();
+        Map<ModelRenderer, Integer> renderTextures = textureMaps.pollFirst();
+        if (renderTextures == null) renderTextures = new IdentityHashMap<>(SkinLayers.Part.values().length);
+        textures = renderTextures;
         try {
             draw.run();
         } finally {
             distanceSquared = previous;
             textures = previousTextures;
+            renderTextures.clear();
+            textureMaps.addFirst(renderTextures);
         }
     }
 

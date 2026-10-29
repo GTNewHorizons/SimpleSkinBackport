@@ -25,9 +25,12 @@ import roadhog360.simpleskinbackport.configuration.configs.ConfigModCompat;
 import roadhog360.simpleskinbackport.core.compat.SmartRenderCompat;
 import roadhog360.simpleskinbackport.ducks.IArmsState;
 import roadhog360.simpleskinbackport.ducks.IBoxSizeGetter;
+import roadhog360.simpleskinbackport.ducks.ISkinLayer;
 import roadhog360.simpleskinbackport.ducks.ITransparentBox;
 
 public class Utils {
+
+    public static final float BODY_LAYER_INFLATION = 0.24F;
 
     public static boolean getSlimFromBase64Data(String base64) {
         JsonObject props = new Gson().fromJson(
@@ -136,7 +139,7 @@ public class Utils {
             size = boxWithSize.ssb$getSize();
         }
         if (transform.isHatLayer()) {
-            size += 0.25F;
+            size += ((ISkinLayer) to).ssb$isBipedPart() ? BODY_LAYER_INFLATION : 0.25F;
         }
         if (transform.isSlim()) {
             if (transform.isRightArm()) {
