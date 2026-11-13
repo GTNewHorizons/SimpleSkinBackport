@@ -38,4 +38,5 @@ dependencies {
     compileOnly('com.github.GTNewHorizons:twilightforest:2.7.30:dev')
     compileOnly deobfCurse("headcrumbs-222838:2279949")
     compileOnly deobfCurse("botania-225643:2283837")
+    compileOnly("ganymedes01.etfuturum:Et-Futurum-Requiem:2.6.65-GTNH:dev") { transitive = false }
 }

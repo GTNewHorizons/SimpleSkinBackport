@@ -2,7 +2,6 @@ package roadhog360.simpleskinbackport.mixins.early;
 
 import net.minecraft.client.model.ModelSkeletonHead;
 import net.minecraft.client.renderer.tileentity.TileEntitySkullRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntitySkull;
 import net.minecraft.util.ResourceLocation;
 
@@ -10,11 +9,11 @@ import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 
 import roadhog360.simpleskinbackport.client.SkinLayerRenderContext;
@@ -26,17 +25,14 @@ public abstract class MixinSkullRenderer {
     @Shadow
     private ModelSkeletonHead field_147538_h;
 
-    @WrapOperation(
-        method = "func_152674_a",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/client/model/ModelSkeletonHead;render(Lnet/minecraft/entity/Entity;FFFFFF)V"))
-    private void ssb$playerHeadModel(ModelSkeletonHead model, Entity entity, float limbSwing, float limbAmount,
-        float age, float yaw, float pitch, float scale, Operation<Void> original,
+    // Swaps the model where it is loaded, not at the render call: Angelica @Redirects that call (cached skull meshes),
+    // which made a @WrapOperation on it silently not apply.
+    @ModifyVariable(method = "func_152674_a", at = @At("LOAD"))
+    private ModelSkeletonHead ssb$playerHeadModel(ModelSkeletonHead model,
         @Local(argsOnly = true, ordinal = 1) int skullType) {
         boolean modernSkin = skullType == 3
             && GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_HEIGHT) == 64;
-        original.call(modernSkin ? field_147538_h : model, entity, limbSwing, limbAmount, age, yaw, pitch, scale);
+        return modernSkin ? field_147538_h : model;
     }
 
     @Redirect(
