@@ -37,6 +37,9 @@ public class SimpleSkinBackportLateMixins implements ILateMixinLoader {
                 mixins.add("botania.MixinClientProxy");
                 mixins.add("botania.MixinRenderTileSkullOverride");
             }
+            if (loadedMods.contains("etfuturum")) {
+                mixins.add("etfuturum.MixinTileEntityFancySkullRenderer");
+            }
         }
         return mixins;
     }
